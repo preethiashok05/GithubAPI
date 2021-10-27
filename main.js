@@ -1,8 +1,8 @@
-const repository = {repository}
-const username = {username}
+const repository = 'Hackbook'
+const username = 'techhub-community'
 const rootURL = "https://api.github.com"
 const params ={"state" : "open"}
-const header = {'Authorization' : `${token}`};
+const header = {'Authorization' : `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`};
 
 
 async function getRepositoryData(){
@@ -16,26 +16,27 @@ async function getRepositoryData(){
    }   
  }
 
- getRepositoryData();
+ getRepositoryData().then((response)=>
+ {
+    console.log(response);
+ });
 
-async function getContent(data){
-   let url = `${rootURL}/repos/${username}/${repository}/contents`;
-   for(let path in data)
-      url=url+'/'+path;
+async function getContent(){
+   let url = `${rootURL}/repos/${username}/${repository}/contents/data`;
    try{
-     data = await fetch(url ,header ,params);
-     if(typeof(data) === object ){
-        if(message in data.keys())
-            return 'Limit of call exceeded'
-         else 
-            console.log(data);
-     }else{
-        console.log(data);
-     }
-      
-   }catch(error){
-      console.error(error);
+   var data= await fetch(url ,header ,params)
+      return data.json();
+   }
+   catch(error){
+      console.log(error);
    }   
 }
 
-getContent(data);
+getContent().then(
+   (response)=>
+   {
+      response.forEach((item,index)=>{
+          console.log(item.name);
+      })
+   }
+);
